@@ -1,12 +1,15 @@
 
 // trivia API geography is cateofory 22, animals is 27, sports is 21
 
-var arrayBack ;
-var questionNumber ; 
+var arrayBack;
+var questionNumber;
+var correctAnswers = 0;
+var positionAnswer;
+
 
 function getQuestions() {
 
-    var queryURL = "https://opentdb.com/api.php?amount=8&category=" + 27 + "&difficulty=medium&type=multiple&encode=url3986";
+    var queryURL = "https://opentdb.com/api.php?amount=8&category=" + 27 + "&type=multiple&encode=url3986";
 
     $.ajax({
         url: queryURL,
@@ -15,12 +18,13 @@ function getQuestions() {
 
         arrayBack = answer;
         questionNumber = 1;
+        correctAnswers = 0;
         displayQuestion(questionNumber);
     });
 }
 
-function displayQuestion(questionNumber) {
-    var i = questionNumber-1;
+function displayQuestion() {
+    var i = questionNumber - 1;
 
     var question = decodeURIComponent(arrayBack.results[i].question);
 
@@ -34,20 +38,23 @@ function displayQuestion(questionNumber) {
     var Answer4 = decodeURIComponent(arrayBack.results[i].incorrect_answers[2]);
 
     // hide the correct answer in a random position, other responses just use the order provided
-    positionAnswer = Math.floor(Math.random() * 4);
-    if (positionAnswer = 1) {
+    positionAnswer = Math.floor(Math.random() * 4) + 1;
+    console.log("position number is " + positionAnswer);
+    $("#answerButtons").empty();
+
+    if (positionAnswer === 1) {
         var Show1 = Answer1;
         var Show2 = Answer2;
         var Show3 = Answer3;
         var Show4 = Answer4;
     }
-    else if (positionAnswer = 2) {
+    else if (positionAnswer === 2) {
         var Show2 = Answer1;
         var Show1 = Answer2;
         var Show3 = Answer3;
         var Show4 = Answer4;
     }
-    else if (positionAnswer = 3) {
+    else if (positionAnswer === 3) {
         var Show3 = Answer1;
         var Show1 = Answer2;
         var Show2 = Answer3;
@@ -60,14 +67,14 @@ function displayQuestion(questionNumber) {
         var Show3 = Answer4;
     }
 
-    $("#answerButtons").empty();
-    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id=AnswerButton1'>"
+
+    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id='AnswerButton1'>"
         + Show1 + "</a> </p>");
-    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id=AnswerButton2'>"
+    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id='AnswerButton2'>"
         + Show2 + "</a> </p>");
-    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id=AnswerButton3'>"
+    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id='AnswerButton3'>"
         + Show3 + "</a> </p>");
-    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id=AnswerButton4'>"
+    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id='AnswerButton4'>"
         + Show4 + "</a> </p>");
 
 
@@ -89,25 +96,60 @@ $(document).on("click", '#startButton', getQuestions);
 $(document).on("click", ".btn", isItRight);
 
 function isItRight(answer) {
-    var i = questionNumber-1;
+    var i = questionNumber - 1;
     // if (i < arrayBack.results.length) {
     //     break;
     // }
     console.log(i);
     console.log(arrayBack.results.length);
-         if (this.text === decodeURIComponent(arrayBack.results[i].correct_answer)) {
-        console.log("correct answer");}
-         else {console.log("try again");} 
-    questionNumber ++;
-    if (i < arrayBack.results.length-1) {
-    displayQuestion(questionNumber);
+    if (this.text === decodeURIComponent(arrayBack.results[i].correct_answer)) {
+        console.log("correct answer");
+        correctAnswers++;
     }
-    else {displayResults();}
-    
+    else {
+        $(this).attr("id", "wrongPick");
+    }
+    questionNumber++;
+    showAnswer();
+    if (i < arrayBack.results.length - 1) {
+        setTimeout(displayQuestion, 1000 * 2);
+    }
+    else { setTimeout(displayResults, 1000 * 2); }
+
 }
 
-function displayResults(){
+function showAnswer() {
+    if (positionAnswer === 1) {
+        $("#AnswerButton1").attr("id", "btnCorrect");
+        // $("#AnswerButton1").css("background-color","green");
+    }
+    if (positionAnswer === 2) {
+        $("#AnswerButton2").attr("id", "btnCorrect");
+        // $("#AnswerButton2").css("background-color","green");
+    }
+    if (positionAnswer === 3) {
+        $("#AnswerButton3").attr("id", "btnCorrect");
+        // $("#AnswerButton3").css("background-color","green");
+    }
+    if (positionAnswer === 4) {
+        $("#AnswerButton4").attr("id", "btnCorrect");
+        // $("#AnswerButton4").css("background-color","green");
+    }
+
+}
+
+function displayResults() {
     console.log("display results");
+    incorrectAnswers = arrayBack.results.length - correctAnswers;
+    $("#answerButtons").empty();
+    $("#answerButtons").append("<p class='lead'><a href='#' class='btn btn-lg btn-secondary' id='startButton'>Try Again</a></p>");
+    $("#trivia").empty();
+    if (correctAnswers / arrayBack.results.length > (5 / 8)) {
+        $("#questionHeader").html("Well Done! <br> Correct Answers: " + correctAnswers + "<br> Incorrect Answes: " + incorrectAnswers);
+    }
+    else {
+        $("#questionHeader").html("Try Again! <br> Correct Answers: " + correctAnswers + "<br> Incorrect Answes: " + incorrectAnswers);
+    }
 }
 
 //   function getImage(key) {

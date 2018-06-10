@@ -16,6 +16,18 @@ a:hover {
   border: .05rem solid #fff;
 }
 
+#btnCorrect {
+    color: #fff;
+    background-color: green;
+    border: .05rem solid green;
+  }
+
+#wrongPick {
+    color: #fff;
+    background-color: red;
+    border: .05rem solid red;
+  }
+
 
 /*
  * Base structure
