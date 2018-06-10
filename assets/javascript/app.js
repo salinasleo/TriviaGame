@@ -96,6 +96,7 @@ function displayQuestion() {
 
 // this function assigns a new subject category to be use in trivia api call, and sets category as active
 // note that the category needs to be set before start of a new game, set of questions cannot be changed halfway
+// possibly add a popup window and prompt if they want to know that information again
 function newSubject() {
     console.log(this.text);
     if (this.text === 'Animals') {
