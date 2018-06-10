@@ -229,6 +229,7 @@ var stopwatch = {
     reset: function () {
         clearInterval(intervalId);
         stopwatch.time = 10;
+        clockRunning = false;
         $("#Timer").text(stopwatch.time);
     },
 
