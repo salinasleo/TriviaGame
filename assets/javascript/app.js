@@ -5,6 +5,7 @@ var arrayBack;
 var questionNumber;
 var correctAnswers = 0;
 var positionAnswer;
+var imageSearch;
 
 
 function getQuestions() {
@@ -28,7 +29,7 @@ function displayQuestion() {
 
     var question = decodeURIComponent(arrayBack.results[i].question);
 
-    var imageSearch = decodeURIComponent(arrayBack.results[i].correct_answer);
+    imageSearch = decodeURIComponent(arrayBack.results[i].correct_answer);
     // var imageUrl = "https://source.unsplash.com/weekly?" + arrayBack.results[0].correct_answer;
     // var imageUrl2 = imageUrl + "," + arrayBack.results[0].question;
 
@@ -111,10 +112,11 @@ function isItRight(answer) {
     }
     questionNumber++;
     showAnswer();
+    getImage();
     if (i < arrayBack.results.length - 1) {
-        setTimeout(displayQuestion, 1000 * 2);
+        setTimeout(displayQuestion, 1000 *3);
     }
-    else { setTimeout(displayResults, 1000 * 2); }
+    else { setTimeout(displayResults, 1000 * 3); }
 
 }
 
@@ -153,7 +155,17 @@ function displayResults() {
 }
 
 //   function getImage(key) {
-
-    //  https://source.unsplash.com/weekly?water
+//     var queryURL = "https://source.unsplash.com/weekly?" + imageSearch;
+//     var AnswerImage = $("<img>");
+//     AnswerImage.attr("src", queryURL);
+//     AnswerImage.attr("alt", imageSearch);
+//     $("#imagePlaceholder").append(AnswerImage);
+//     setTimeout( function() {$("#imagePlaceholder").empty();} , 1000 * 4); }
 // https://images.unsplash.com/photo-1446704477871-62a4972035cd?fit=crop&fm=jpg&h=800&q=50&w=1200
-//   }
+
+function getImage(key) {
+    var queryURL = "url(https://source.unsplash.com/weekly?" + encodeURIComponent(imageSearch) + ")";
+    console.log(queryURL);
+    $("body").css("background-image", queryURL);
+    setTimeout( function() {$("body").css("background-image", "none")} , 1000 * 3); }
+// https://images.unsplash.com/photo-1446704477871-62a4972035cd?fit=crop&fm=jpg&h=800&q=50&w=1200
