@@ -6,11 +6,11 @@ var questionNumber;
 var correctAnswers = 0;
 var positionAnswer;
 var imageSearch;
-
+var subject = 27;
 
 function getQuestions() {
 
-    var queryURL = "https://opentdb.com/api.php?amount=8&category=" + 27 + "&type=multiple&encode=url3986";
+    var queryURL = "https://opentdb.com/api.php?amount=8&category=" + subject + "&type=multiple&encode=url3986";
 
     $.ajax({
         url: queryURL,
@@ -92,6 +92,32 @@ function displayQuestion() {
 
 $(document).on("click", '#startButton', getQuestions);
 
+$(document).on("click", '.nav-link', newSubject);
+
+function newSubject() {
+    console.log(this.text);
+    if (this.text === 'Animals') {
+        subject = 27;
+        $("#Animals").attr("class", "nav-link active");
+        $("#Geography").attr("class", "nav-link");
+        $("#Sports").attr("class", "nav-link");
+    }
+    else if (this.text === 'Geography') {
+        subject = 22;
+        $("#Geography").attr("class", "nav-link active"); 
+        $("#Animals").attr("class", "nav-link");
+        $("#Sports").attr("class", "nav-link");
+      }
+    else {
+        subject = 21;
+        $("#Sports").attr("class", "nav-link active");
+        $("#Geography").attr("class", "nav-link");
+        $("#Animals").attr("class", "nav-link");
+
+        }
+}
+
+
 // Calling the renderButtons function to display the intial buttons
 //   renderButtons();
 $(document).on("click", ".btn", isItRight);
@@ -114,9 +140,9 @@ function isItRight(answer) {
     showAnswer();
     getImage();
     if (i < arrayBack.results.length - 1) {
-        setTimeout(displayQuestion, 1000 *3);
+        setTimeout(displayQuestion, 1000 * 4);
     }
-    else { setTimeout(displayResults, 1000 * 3); }
+    else { setTimeout(displayResults, 1000 * 4); }
 
 }
 
@@ -167,5 +193,6 @@ function getImage(key) {
     var queryURL = "url(https://source.unsplash.com/weekly?" + encodeURIComponent(imageSearch) + ")";
     console.log(queryURL);
     $("body").css("background-image", queryURL);
-    setTimeout( function() {$("body").css("background-image", "none")} , 1000 * 3); }
+    setTimeout(function () { $("body").css("background-image", "none") }, 1000 * 4);
+}
 // https://images.unsplash.com/photo-1446704477871-62a4972035cd?fit=crop&fm=jpg&h=800&q=50&w=1200
