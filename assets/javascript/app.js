@@ -12,7 +12,10 @@ $(document).on("click", '#startButton', getQuestions);
 
 $(document).on("click", '.nav-link', newSubject);
 
-$(document).on("click", ".btn", isItRight);
+$(document).on("click", '#AnswerButton1', isItRight);
+$(document).on("click", '#AnswerButton2', isItRight);
+$(document).on("click", '#AnswerButton3', isItRight);
+$(document).on("click", '#AnswerButton4', isItRight);
 
 
 // this function call API, sets aside results to be used by other functions, initializes question counter
@@ -27,6 +30,7 @@ function getQuestions() {
     }).then(function (answer) {
 
         arrayBack = answer;
+        console.log("i just got a new set of questions");
         questionNumber = 1;
         correctAnswers = 0;
         displayQuestion(questionNumber);
@@ -254,15 +258,14 @@ var stopwatch = {
         $("#Timer").text(stopwatch.time);
         if (stopwatch.time <1) {
             $("#Timer").css("color", "red");
-            questionNumber++;
             stopwatch.stop();
             showAnswer();
             disableButtons();
             getImage();
             if (questionNumber < arrayBack.results.length ) {
                 console.log("question number" + questionNumber + "array l" + arrayBack.results.length);
+                questionNumber++;
                 setTimeout(displayQuestion, 1000 * 4);
-               
             }
             else { 
                 setTimeout(displayResults, 1000 * 4); 
