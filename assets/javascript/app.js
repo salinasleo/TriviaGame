@@ -252,6 +252,7 @@ var stopwatch = {
         $("#Timer").text(stopwatch.time);
         if (stopwatch.time <1) {
             $("#Timer").css("color", "red");
+            questionNumber++;
             stopwatch.stop();
             showAnswer();
             disableButtons();
@@ -259,9 +260,12 @@ var stopwatch = {
             if (questionNumber < arrayBack.results.length ) {
                 console.log("question number" + questionNumber + "array l" + arrayBack.results.length);
                 setTimeout(displayQuestion, 1000 * 4);
-                questionNumber++;
+               
             }
-            else { setTimeout(displayResults, 1000 * 4); }
+            else { 
+                setTimeout(displayResults, 1000 * 4); 
+                stopwatch.reset;
+                }
                 }
     }
 };
